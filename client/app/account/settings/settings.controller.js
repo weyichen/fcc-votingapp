@@ -4,6 +4,8 @@ angular.module('basejump1App')
   .controller('SettingsCtrl', function ($scope, User, Auth) {
     $scope.errors = {};
 
+    $scope.getCurrentUser = Auth.getCurrentUser;
+      
     $scope.changePassword = function(form) {
       $scope.submitted = true;
       if(form.$valid) {

@@ -3,12 +3,16 @@
 angular.module('basejump1App')
   .controller('MainCtrl', function ($scope, $http) {
     $scope.awesomeThings = [];
+    $scope.newThing = 'hjj';
+    $scope.test = 'helloworld';
 
     $http.get('/api/things').success(function(awesomeThings) {
       $scope.awesomeThings = awesomeThings;
     });
 
-    $scope.addThing = function() {
+    $scope.addThing = function(form) {
+      $scope.test = form;
+
       if($scope.newThing === '') {
         return;
       }

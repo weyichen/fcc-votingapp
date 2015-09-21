@@ -1,0 +1,15 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12">
+		{{poll.title}}
+		{{poll.desc}}
+		<form name='form' class='form'>
+			<div class='formgroup' ng-repeat='question in poll.questions'>
+				<label>{{question.prompt}}</label>
+				<input type='text' />
+		</form>
+		</div>
+	</div>
+</div>

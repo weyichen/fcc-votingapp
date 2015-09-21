@@ -1,0 +1,53 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12">
+			User: {{test}}
+			<form name='form' class='form' novalidate>
+
+				<label>Title</label>
+				<input type='text' class='form-control' name='title' ng-model='poll.title' />
+				
+				<label>Description</label>
+				<textarea class='form-control' name='desc' ng-model='poll.desc' />
+
+				<label>Questions</label>
+				<div class="form-group" ng-repeat='question in pollQuestions track by $index'>
+					{{$index+1}}. 
+					<input type='text' class='form-control' ng-model='question.prompt' />
+					<a ng-click="deleteQuestion($index)" class="trash"><span class="glyphicon glyphicon-remove pull-right"></span></a>
+					
+					Type: <button ng-click='toggleType($index)'>{{question.type}}</button>
+					<div ng-show="question.type==='mc'">
+						<div ng-repeat='choice in question.choices track by $index'>
+							<input type='text' ng-model='question.choices[$index]' />
+							<a ng-click="deleteChoice($parent.$index, $index)" class="trash"><span class="glyphicon glyphicon-remove pull-right"></span></a>
+						</div>
+						<button ng-click='addChoice($index)'>+</button>
+					</div>
+
+
+
+				</div>
+				<button ng-click='addQuestion()'>+</button>
+
+				<button ng-click='addPoll()' class='btn btn-lg btn-primary'>Create Poll</button>
+
+			</form>
+			
+		</div>
+	</div>
+
+	<div class='row'>
+		<div class='col-sm=12'>
+			<ul class="list-group">
+				<li class="list-group-item" ng-repeat="poll in polls">
+					<a href='/poll/{{poll._id}}'><strong>{{poll.title}}</strong></a> - {{poll.authorname || 'Anonymous'}} - {{poll.questions.length}} Questions<br>
+					<span class="text-muted">{{poll.desc}}</span>
+					<a ng-click="deletePoll($index)" class="trash"><span class="glyphicon glyphicon-trash pull-right"></span></a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>

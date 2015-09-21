@@ -2,10 +2,10 @@
 
 angular.module('basejump1App')
   .controller('NavbarCtrl', function ($scope, $location, Auth) {
-    $scope.menu = [{
-      'title': 'Home',
-      'link': '/'
-    }];
+    $scope.menu = [
+    {'title': 'Home', 'link': '/'},
+    {'title': 'Polls', 'link': '/poll'},
+    ];
 
     $scope.isCollapsed = true;
     $scope.isLoggedIn = Auth.isLoggedIn;
