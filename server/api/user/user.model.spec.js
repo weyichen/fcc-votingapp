@@ -4,12 +4,7 @@ var should = require('should');
 var app = require('../../app');
 var User = require('./user.model');
 
-var user = new User({
-  provider: 'local',
-  name: 'Fake User',
-  email: 'test@test.com',
-  password: 'password'
-});
+var user;
 
 describe('User Model', function() {
   before(function(done) {
@@ -18,6 +13,16 @@ describe('User Model', function() {
       done();
     });
   });
+
+  beforeEach(function(done) {
+    user = new User({
+      provider: 'local',
+      name: 'Fake User',
+      email: 'test@test.com',
+      password: 'password'
+    });
+    done();  
+  })
 
   afterEach(function(done) {
     User.remove().exec().then(function() {
@@ -48,6 +53,18 @@ describe('User Model', function() {
       should.exist(err);
       done();
     });
+  });
+
+  it('should work without a name', function(done) {
+    user.name = '';
+    user.save(function(err) {
+      User.find({}, function(err, users) {
+        users.should.have.length(1);
+        //expect(users.length).toBe(1);
+        done();
+      }); 
+    });
+    
   });
 
   it("should authenticate user if password is valid", function() {

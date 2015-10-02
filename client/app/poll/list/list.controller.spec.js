@@ -1,19 +1,23 @@
 'use strict';
 
-describe('Controller: PollCtrl', function () {
+describe('Controller: PollListCtrl', function () {
 
   // load the controller's module
   beforeEach(module('basejump1App'));
 
-  var PollCtrl, scope;
+  var PollListCtrl, scope;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    PollCtrl = $controller('PollCtrl', {
+    PollListCtrl = $controller('PollListCtrl', {
       $scope: scope
     });
   }));
+
+  it('should ...', function () {
+    expect(1).toEqual(1);
+  });
 
   it('should ...', function () {
     expect(1).toEqual(1);

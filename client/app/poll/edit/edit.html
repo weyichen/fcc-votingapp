@@ -1,0 +1,98 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12">
+
+		<div ng-show='debug' class="alert alert-info" role="alert">
+			Debug
+			{{errors}}
+			<a href={{apiUrl}}>API Lookup</a>
+		</div>
+
+		<form name='form' class='form' novalidate>
+
+			<div class='form-group'>
+				<label>Title</label>
+				<input type='text' class='form-control' name='title' placeholder='The Great Poll' ng-model='poll.title' />
+				<label>Description</label>
+				<textarea class='form-control' name='desc' placeholder='Best poll ever!' ng-model='poll.desc' />
+			</div>
+
+				<label>Questions</label>
+				<div class='form-group' ng-repeat='question in poll.questions'>
+					<div class='form-group col-sm-12'>
+						<label for='prompt' class='col-sm-1 control-label'>Q{{$index+1}}</label>
+						<div class='col-sm-8'>
+							<input type='text' class='form-control' id='prompt' ng-model='question.prompt' placeholder='Prompt'/>
+						</div>
+						<div class='col-sm-2'>
+							<select class='form-control' ng-model='question.type' ng-options="key for (key, value) in types" ng-change='changeType($index)'></select>
+						</div>
+						<div class='col-sm-1'>
+							<a ng-click="addQuestion($index)" class="trash"><span class="glyphicon glyphicon-plus"></span></a>
+							<a ng-click="deleteQuestion($index)" class="trash"><span class="glyphicon glyphicon-remove"></span></a>
+						</div>
+					</div>
+					
+					<div ng-show="question.type==='mc' || question.type==='ms'" class='form-group'>
+						<div ng-repeat='label in question.choices.labels track by $index' class='col-sm-12'>
+							<div class='col-sm-1'></div>
+							<div class='col-sm-1 checkbox'>
+								<input ng-show="question.type==='mc'" class='pull-right' type='radio' name='mockradio' />
+								<input ng-show="question.type==='ms'" class='pull-right' type='checkbox' />
+							</div>
+							<span class='col-sm-7'>
+
+								<input type='text' class='form-control' placeholder='Choice' ng-model='question.choices.labels[$index]' />
+							</span>
+							<span class='col-sm-2'>
+								<a ng-click="addChoice($index, $index)" class="trash"><span class="glyphicon glyphicon-plus"></span></a>
+								<a ng-click="deleteChoice($parent.$index, $index)" class="trash"><span class="glyphicon glyphicon-remove"></span></a>
+							</span>
+						</div>
+						<div class='col-sm-12 row'>
+							<div class='col-sm-4 checkbox'>
+								<label><input type='checkbox' ng-model='question.choices.custom'> Allow user to enter custom choice</label>
+							</div>
+							<div class='col-sm-2'></div>
+						</div>
+						<div class='col-sm-3'></div>
+						<div class='col-sm-6'>
+							<button class='btn btn-block' ng-click='addChoice($index)'>Add Choice</button>
+						</div>
+						<div class='col-sm-3'></div>
+					</div>
+				</div>
+
+				<div ng-show="question.type===''" class='form-group'>
+				</div>
+
+				<div ng-show="question.type===''" class='form-group'>
+				</div>
+
+				<div ng-show="question.type===''" class='form-group'>
+				</div>
+
+				<div class='form-group col-sm-12'>
+					<div class='col-sm-1'></div>
+					<div class='col-sm-5'>
+						<select class='form-control' ng-model='newQType' ng-options="key for (key, value) in types">
+							<option value="">Select Question Type</option>
+						</select>
+					</div>
+					<div class='col-sm-5'>
+						<button class='btn btn-block' ng-click='addQuestion()'>Add Question</button>
+					</div>
+					<div class='col-sm-1'></div>
+				</div>
+
+				<div class='form-group col-sm-12'>
+					<button ng-hide='pollId' ng-click='addPoll()' class='btn btn-lg btn-primary'>Create Poll</button>
+					<button ng-show='pollId' ng-click='editPoll()' class='btn btn-lg btn-primary'>Update Poll</button>
+				</div>
+			</form>
+		
+		</div>
+	</div>
+</div>
