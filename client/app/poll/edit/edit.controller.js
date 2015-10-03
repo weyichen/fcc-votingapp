@@ -13,6 +13,7 @@ angular.module('basejump1App')
     };
 
   	$scope.poll = {questions: []};
+    $scope.ph = {};
 
     $scope.debug = false;
   	$scope.errors = {};
@@ -24,27 +25,6 @@ angular.module('basejump1App')
     	});
       $scope.pollId = $routeParams.id;
       $scope.apiUrl = 'http://localhost:9000/api/polls/' + $scope.pollId;
-    }
-
-    function setType(type, n) {
-      switch(type) {
-        case 'mc':
-          $scope.poll.questions[n].choices = {custom: false, labels: []};
-          break;
-        case 'ms':
-          $scope.poll.questions[n].choices = {custom: false, labels: []};
-          break;
-        case 'multitext':
-          $scope.poll.questions[n].choices = {labels: []};
-          break;
-        case 'scale':
-          $scope.poll.questions[n].choices = {max: 5, step: 1};
-          break;
-        case 'rank':
-          $scope.poll.questions[n].choices = {label: []};
-        default:
-          $scope.poll.questions[n].choices = null;
-      }
     }
 
     $scope.addQuestion = function(n) {
@@ -104,4 +84,50 @@ angular.module('basejump1App')
     		$scope.errors.other = err.message;
     	});
   	}
+
+    function setType(type, n) {
+      switch(type) {
+        case 'mc':
+          $scope.poll.questions[n].choices = {custom: false, labels: []};
+          break;
+        case 'ms':
+          $scope.poll.questions[n].choices = {custom: false, labels: []};
+          break;
+        case 'multitext':
+          $scope.poll.questions[n].choices = {labels: []};
+          break;
+        case 'scale':
+          $scope.poll.questions[n].choices = {max: 5, step: 1, labels: []};
+          break;
+        case 'rank':
+          $scope.poll.questions[n].choices = {labels: []};
+          break;
+        default:
+          $scope.poll.questions[n].choices = null;
+      }
+    }
+
+    // examples for input fields and different question types
+    $scope.ph = {
+      title: "Best Poll Ever",
+      description: "Imma let you finish, but this poll is the best poll of all time!",
+
+      prompt: {
+        text: "What is your name?",
+        comment: "Please let us know if you have any comments or suggestions.",
+        mc: "What is your favorite ice cream flavor?",
+        ms: "Which of these operating systems do you use?",
+        multitext: "What is the first word that comes to mind for each of these products?",
+        scale: "On a scale of 1 (least interested) to 5 (most interested), please indicate your level of interest in each of these.",
+        rank: "Please rank these clothing brands from your favorite to least favorite."
+      },
+
+      choices: {
+        mc: ["Vanilla", "Chocolate", "Strawberry", "Mint Chocolate Chip"],
+        ms: ["Windows", "OS X", "Linux", "iOS", "Android"],
+        multitext: ["Coca-Cola", "Pepsi", "Sprite", "7-Up", "Fanta", "Orangina"],
+        scale: ["Skydiving", "Rock Climbing", "Mountain Biking", "Skiing", "Scuba Diving", "Freerunning"],
+        rank: ["H&M", "Forever 21", "Gap", "Abercrombie & Fitch", "Diesel", "Levi's", "Aeropostale"]
+      }
+    }
   });
