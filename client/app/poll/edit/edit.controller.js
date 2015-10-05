@@ -2,22 +2,11 @@
 
 angular.module('basejump1App')
   .controller('PollEditCtrl', function ($scope, $routeParams, $http, Auth) {
-    $scope.types = {
-      'Text': 'text',
-      'Comment': 'comment',
-      'Multiple Choice': 'mc',
-      'Multiple Select': 'ms',
-      'Multiple Text': 'multitext',
-      'Scale': 'scale',
-      'Rank': 'rank'
-    };
+    $scope.debug = true;
+    $scope.errors = {};
 
   	$scope.poll = {questions: []};
-    $scope.ph = {};
-
-    $scope.debug = false;
-  	$scope.errors = {};
-
+    
     // get existing poll if user is editing one
     if ($routeParams.id) {
     	$http.get('/api/polls/' + $routeParams.id).success(function(poll) {
@@ -85,6 +74,17 @@ angular.module('basejump1App')
     	});
   	}
 
+
+    $scope.types = {
+      'Text': 'text',
+      'Comment': 'comment',
+      'Multiple Choice': 'mc',
+      'Multiple Select': 'ms',
+      'Multiple Text': 'multitext',
+      'Scale': 'scale',
+      'Rank': 'rank'
+    };
+
     function setType(type, n) {
       switch(type) {
         case 'mc':
@@ -97,7 +97,7 @@ angular.module('basejump1App')
           $scope.poll.questions[n].choices = {labels: []};
           break;
         case 'scale':
-          $scope.poll.questions[n].choices = {max: 5, step: 1, labels: []};
+          $scope.poll.questions[n].choices = {max: 5, step: 1, na:false, labels: []};
           break;
         case 'rank':
           $scope.poll.questions[n].choices = {labels: []};

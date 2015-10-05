@@ -1,6 +1,17 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
 <div class="container">
+	<div ng-show='debug' class="alert alert-info" role="alert">
+		<div>Debug</div>
+		<div>Errors: {{errors}}</div>
+		<div>Answers: {{answers}}</div>
+		<div>{{poll.aggregates}}</div>
+		<div>Test: {{test}}</div>
+		<div>User: {{user}}</div>
+		<div><button ng-click='clearResponses()'>Clear Responses</button></div>
+		<div><a href={{apiUrl}}>API Lookup</a></div>
+	</div>
+
 	<div class='page-header'>
 		<h1>{{poll.title}}</h1>
 		<h5>Created by {{poll.authorname || 'Anonymous'}}, {{poll.date | date:'medium'}}</h5>
@@ -13,17 +24,43 @@
 			<form name='form' class='form'>
 				<div class='formgroup' ng-repeat='question in poll.questions'>
 					<label>{{$index+1}}. {{question.prompt}}</label>
-					<input ng-show="question.type==='text'" type='text' ng-model="response[$index]" />
-					<div ng-show="question.type==='mc'" class='formgroup' ng-repeat='choice in question.choices track by $index'>
-						<input type='checkbox' ng-show='question.multiselect' ng-model="response[$parent.$index]" />
-						<input type='radio' name="{{'radio'+$parent.$index}}" ng-show='!question.multiselect' ng-model="response[$parent.$index]" value='{{choice}}' />
-						{{choice}}
+
+					<div ng-show="question.type==='text'">
+						<input type='text' class='form-control' ng-model="answers[$index]" />
 					</div>
-					<div ng-show="question.custom">
-						<input type='checkbox' ng-show='question.multiselect' ng-model="response[$index]">
-						<input type='radio' name="{{'radio'+$parent.$index}}" ng-show='!question.multiselect' ng-model="response[$index]" value='{{choice}}'>
-						<input type='text' ng-model='response[$index]' />
+
+					<div ng-show="question.type==='comment'">
+						<textarea class='form-control' ng-model="answers[$index]" />
 					</div>
+
+					<div ng-show="question.type==='mc' || question.type==='ms'" class='formgroup'>
+						<div class='form-inline' ng-repeat='label in question.choices.labels track by $index'>
+							<input type='radio'  ng-show="question.type==='mc'" ng-model="answers[$parent.$index]" name="{{'radio'+$parent.$index}}" value='{{label}}' />
+							<input type='checkbox' ng-show="question.type==='ms'" ng-model="answers[$parent.$index][label]" name="{{'checkbox'+$parent.$index}}" />
+							{{label}}
+						</div>
+						<div class='form-inline' ng-show="question.choices.custom">
+							<input type='radio'  ng-show="question.type==='mc'" ng-model="answers[$index]" name="{{'radio'+$index}}" value="{{customInput[$index]}}" />
+							<input type='checkbox' ng-show="question.type==='ms'" ng-model="answers[$index][customInput[$index]]" name="{{'checkbox'+$index}}" />
+							<input type='text' class='form-control' ng-model="customInput[$index]" />
+						</div>
+					</div>
+
+					<div ng-show="question.type==='multitext'" class='formgroup'>
+						<div class='form-inline ' ng-repeat='label in question.choices.labels track by $index'>
+							{{label}}<input type='text' class='form-control' ng-model="answers[$parent.$index][label]">
+						</div>
+					</div>
+
+					<div ng-show="question.type==='scale'" class='formgroup'>
+						<div class='form-inline' ng-repeat='label in question.choices.labels track by $index'>
+							{{label}}<input type='range' min=1 max="{{question.choices.max}}" ng-model="answers[$parent.$index][label]">
+						</div>
+					</div>
+
+					<div ng-show="question.type==='rank'" class='formgroup'>
+					</div>
+					
 				</div>
 				<button class='btn btn-default' ng-click='submit()'>Submit</button>
 			</form>
