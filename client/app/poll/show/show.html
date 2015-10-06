@@ -8,7 +8,10 @@
 		<div>{{poll.aggregates}}</div>
 		<div>Test: {{test}}</div>
 		<div>User: {{user}}</div>
-		<div><button ng-click='clearResponses()'>Clear Responses</button></div>
+		<div>
+			<button ng-click='clearResponses()'>Clear Responses</button>
+			<button ng-click='clearAggregates()'>Clear Aggregates</button>
+		</div>
 		<div><a href={{apiUrl}}>API Lookup</a></div>
 	</div>
 

@@ -10,9 +10,6 @@ angular.module('basejump1App')
     $scope.poll = {};
     $scope.answers = [];
     $scope.customInput = [];
-
-  	$scope.radiobox;
-  	
     
     $http.get('/api/polls/' + $routeParams.id).success(function(poll) {
       $scope.poll = poll;
@@ -21,52 +18,88 @@ angular.module('basejump1App')
     $scope.apiUrl = 'http://localhost:9000/api/polls/' + $scope.pollId;
 
 
-    $scope.clearResponses = function() {
-      $scope.poll.responses = [];
-
-      // TODO: clean up this mess
-      for (var i=0; i<$scope.poll.questions.length; i++) {
-        if ($scope.poll.aggregates[i])
-          $scope.poll.aggregates[i] = {};
-      }
-
-      updatePoll();
-    }
-
   	$scope.submit = function() {
   		$scope.poll.responses.push({user: $scope.user._id, username: $scope.user.name, answers: $scope.answers});
 
-      for (var i=0; i<$scope.poll.questions.length; i++) {
-        if (!$scope.poll.aggregates[i])
-          $scope.poll.aggregates[i] = {};
+      var questions = $scope.poll.questions;
+      var aggregate = $scope.poll.aggregates;
 
-          var answer = $scope.answers[i];
+      for (var i=0; i<questions.length; i++) {
+        if (!aggregate[i])
+          aggregate[i] = {};
 
-        switch($scope.poll.questions[i].type) {
+        var answer = $scope.answers[i];
+
+        switch(questions[i].type) {
+          case 'text':
+            aggregate[i] = count(aggregate[i], answer);
+            break;
+          case 'multitext':
+            for (var prop in answer) {
+              if (answer.hasOwnProperty(prop))
+                if (!aggregate[i].hasOwnProperty(prop))
+                  aggregate[i][prop] = {};
+                aggregate[i][prop] = count(aggregate[i][prop], answer[prop]);
+            }
+            break;
           case 'mc':
-            addCount(i, answer);
+            aggregate[i] = count(aggregate[i], answer);
             break;
           case 'ms':
-            for (var select in answer)
-              if (answer.hasOwnProperty(select))
-                addCount(i, select);
+            for (var prop in answer) {
+              if (answer.hasOwnProperty(prop))
+                aggregate[i] = count(aggregate[i], prop);
+            }
             break;
-          case 'text':
-            
+          case 'scale':
+            for (var prop in answer) {
+              if (answer.hasOwnProperty(prop))
+                aggregate[i] = average(aggregate[i], prop, answer[prop])
+            }
+            break;
           default:
 
         }
       }
-      //$scope.poll.aggregates.push();
 
   		updatePoll();
   	}
 
-    function addCount(n, response) {
-      if ($scope.poll.aggregates[n].hasOwnProperty(response))
-        $scope.poll.aggregates[n][response] += 1;
-      else
-        $scope.poll.aggregates[n][response] = 1;
+    function count(aggregate, prop) {
+      var a = aggregate;
+      (a.hasOwnProperty(prop)) ? a[prop] += 1 : a[prop] = 1;
+      return a;
+    }
+
+    function average(aggregate, prop, value) {
+      var a = aggregate;
+      if (a.hasOwnProperty(prop)) {
+        a[prop]['avg'] = (a[prop]['avg']*a[prop]['num'] + 1*value) / (a[prop]['num'] + 1);
+        a[prop]['num']++;
+      }
+      else {
+        a[prop] = {avg: value};
+        a[prop]['num'] = 1;
+      }
+      return a;
+    }
+
+    function buildArray(obj) {
+      var array = [];
+      for (var prop in obj)
+        if (obj.hasOwnProperty(prop))
+          array.push({prop: prop, val: obj[prop]});
+      return array;
+    }
+
+    $scope.clearResponses = function() {
+      $scope.poll.responses = [];
+      updatePoll();
+    }
+
+    $scope.clearAggregates = function() {
+      $scope.poll.aggregates = [];
+      updatePoll();
     }
  
     function updatePoll() {
@@ -82,4 +115,5 @@ angular.module('basejump1App')
         $scope.errors.other = err.message;
       });
     }
+
   });
