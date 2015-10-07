@@ -19,7 +19,7 @@
 			</div>
 
 				<label>Questions</label>
-				<div class='form-group' ng-repeat='question in poll.questions'>
+				<div class='form-group panel panel-default panel-body' ng-repeat='question in poll.questions'>
 					<div class='form-group col-sm-12'>
 						<label for='prompt' class='col-sm-1 control-label'>Q{{$index+1}}</label>
 						<div class='col-sm-8'>
@@ -29,59 +29,53 @@
 							<select class='form-control' ng-model='question.type' ng-options="key for (key, value) in types" ng-change='changeType($index)'></select>
 						</div>
 						<div class='col-sm-1'>
-							<a ng-click="addQuestion($index)" class="trash"><span class="glyphicon glyphicon-plus"></span></a>
-							<a ng-click="deleteQuestion($index)" class="trash"><span class="glyphicon glyphicon-remove"></span></a>
+							<a ng-click="addQuestion($index)" class="text-info"><span class="glyphicon glyphicon-plus"></span></a>
+							<a ng-click="deleteQuestion($index)" class="text-danger"><span class="glyphicon glyphicon-remove"></span></a>
 						</div>
 					</div>
 					
-					<div ng-show="question.type!='comment' || question.type!='text'" class='form-group'>
+					<!-- Set Choices -->
+					<div ng-show="question.type!='comment' && question.type!='text'" class='form-group'>
 						<div ng-repeat='label in question.choices.labels track by $index' class='col-sm-12'>
 							<span class='col-sm-2'>
 								<input ng-show="question.type==='mc'" class='pull-right' type='radio' name='mockradio' />
 								<input ng-show="question.type==='ms'" class='pull-right' type='checkbox' />
 							</span>
 							<span class='col-sm-7'>
-
 								<input type='text' class='form-control' placeholder='{{ph.choices[question.type][$index]}}' ng-model='question.choices.labels[$index]' />
 							</span>
 							<span class='col-sm-2'>
-								<a ng-click="addChoice($index, $index)" class="trash"><span class="glyphicon glyphicon-plus"></span></a>
-								<a ng-click="deleteChoice($parent.$index, $index)" class="trash"><span class="glyphicon glyphicon-remove"></span></a>
+								<a ng-click="addChoice($parent.$index, $index)" class="text-info"><span class="glyphicon glyphicon-plus"></span></a>
+								<a ng-click="deleteChoice($parent.$index, $index)" class="text-danger"><span class="glyphicon glyphicon-remove"></span></a>
 							</span>
 						</div>
-						<div class='col-sm-12 row text-center'>
-							<span class='col-sm-2'></span>
-
-							<!-- custom options for different question types -->
-							<span class='col-sm-7 text-center form-inline' ng-show="question.type==='mc'||question.type==='ms'">
-								<input type='checkbox' ng-model='question.choices.custom'> Allow user to enter custom choice
-							</span>
-							<span class='col-sm-7 text-center form-inline' ng-show="question.type==='scale'">
-								<input type='number' class='form-control' max=100 min=2 ng-model='question.choices.max' /> Scale Max (Min is 1)
-								<input type='number' class='form-control' max=10 min=1 ng-model='question.choices.step' /> Step Size		
-							</span>
-
-							<span class='col-sm-3'></span>
-						</div>
+						<!-- Add Choices -->
 						<div class='col-sm-12'>
+							<span class='col-sm-2'></span>
+							<span class='col-sm-7 text-center'>
+								<button class='btn btn-block' ng-click='addChoice($index)'><span class="glyphicon glyphicon-plus"></span></button>
+							</span>
 							<span class='col-sm-3'></span>
-							<span class='col-sm-6 text-center'>
-								<button class='btn' ng-click='addChoice($index)'><span class="glyphicon glyphicon-plus"></span></button>
+						</div>
+						<!-- custom options for different question types -->
+						<div class='col-sm-12 row text-center'>
+							<span class='col-sm-4'></span>
+							<span class='col-sm-5 text-left form-inline'> 
+								<span ng-show="question.type==='mc'||question.type==='ms'">
+									<input type='checkbox' ng-model='question.choices.custom'> Allow user to enter custom choice
+								</span>
+								<span ng-show="question.type==='scale'">
+									<div><input type='number' class='form-control' max=100 min=2 ng-model='question.choices.max' /> Scale Max (Min is 1)</div>
+									<div><input type='number' class='form-control' max=10 min=1 ng-model='question.choices.step' /> Step Size</div>
+									<div><input type='checkbox' ng-model='question.choices.na'> Allow user to specify n/a</div>
+								</span>
 							</span>
 							<span class='col-sm-3'></span>
 						</div>
 					</div>
 				</div>
 
-
-				
-
-				<div ng-show="question.type===''" class='form-group'>
-				</div>
-
-				<div ng-show="question.type===''" class='form-group'>
-				</div>
-
+				<!-- Add New Question -->
 				<div class='form-group col-sm-12'>
 					<div class='col-sm-1'></div>
 					<div class='col-sm-5'>

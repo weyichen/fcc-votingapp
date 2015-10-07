@@ -16,10 +16,10 @@ angular.module('basejump1App')
       $scope.apiUrl = 'http://localhost:9000/api/polls/' + $scope.pollId;
     }
 
+    // insert a question before the specified position, or if no index is provided, insert at the end
     $scope.addQuestion = function(n) {
-      // insert a question before the specified position, or if no index is provided, insert at the end
       if (Number.isInteger(n)) {
-
+        $scope.poll.questions.splice(n, 0, {});
       } else {
         $scope.poll.questions.push({type: $scope.newQType});
         setType($scope.newQType, $scope.poll.questions.length - 1);
@@ -34,12 +34,17 @@ angular.module('basejump1App')
       $scope.poll.questions.splice(n, 1);
     }
 
-    $scope.addChoice = function(n) {
-        $scope.poll.questions[n].choices.labels.push('');
+    // insert a choice for the specified question at the specified position, or if no choice index is specified, insert at the end
+    $scope.addChoice = function(q, c) {
+      if (Number.isInteger(c)) {
+        $scope.poll.questions[q].choices.labels.splice(c, 0, '');
+      } else {
+        $scope.poll.questions[q].choices.labels.push('');
+      }
     }
 
-    $scope.deleteChoice = function(i, j) {
-        $scope.poll.questions[i].choices.labels.splice(j, 1);
+    $scope.deleteChoice = function(q, c) {
+        $scope.poll.questions[q].choices.labels.splice(c, 1);
     }
 
     $scope.addPoll = function() {
