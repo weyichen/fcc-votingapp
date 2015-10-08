@@ -1,29 +1,34 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
 <div class="container">
-	<div ng-show='debug' class="alert alert-info" role="alert">
-		<div>Debug</div>
-		<div>Errors: {{errors}}</div>
-		<div><a href={{apiUrl}}>API Lookup</a></div>
-	</div>
+	<debug>Custom</debug>
 
 	<div class="row">
 		<div class="col-sm-12">
 		<form name='form' class='form' novalidate>
 
-			<div class='form-group'>
-				<label>Title</label>
-				<input type='text' class='form-control' name='title' placeholder='{{ph.title}}' ng-model='poll.title' />
-				<label>Description</label>
-				<textarea class='form-control' name='desc' placeholder='{{ph.description}}' ng-model='poll.desc' />
+		<div class='col-sm-12'>
+			<div class='col-sm-9 form-group'>
+				<div class='has-feedback'>
+					<label>Title</label>
+					<input type='text' required class='form-control' name='title' placeholder='{{ph.title}}' ng-model='poll.title'>
+					<span class="trash glyphicon glyphicon-ban-circle form-control-feedback" aria-hidden="true" ng-show='form.title.$error.required'></span>
+				</div>
+				<div class='has-feedback'>
+					<label>Description</label>
+					<textarea class='form-control' name='desc' placeholder='{{ph.description}}' ng-model='poll.desc' />
+				</div>
 			</div>
+			<div class='col-sm-3'></div>
+		</div>
 
 				<label>Questions</label>
 				<div class='form-group panel panel-default panel-body' ng-repeat='question in poll.questions'>
 					<div class='form-group col-sm-12'>
 						<label for='prompt' class='col-sm-1 control-label'>Q{{$index+1}}</label>
-						<div class='col-sm-8'>
-							<input type='text' class='form-control' id='prompt' ng-model='question.prompt' placeholder="{{ph.prompt[question.type]}}"/>
+						<div class='col-sm-8 has-feedback'>
+							<input type='text' required class='form-control' name="{{'prompt'+$index}}" id="{{'prompt'+$index}}" ng-model='question.prompt' placeholder="{{ph.prompt[question.type]}}">
+							<span class="trash glyphicon glyphicon-ban-circle form-control-feedback" aria-hidden="true" ng-show="{{form['prompt'+$index].$error.required}}"></span>
 						</div>
 						<div class='col-sm-2'>
 							<select class='form-control' ng-model='question.type' ng-options="key for (key, value) in types" ng-change='changeType($index)'></select>
