@@ -1,19 +1,16 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
 <div class="container">
-	<debug>Custom</debug>
+	<ptdebug>Custom</ptdebug>
 
 	<div class="row">
 		<div class="col-sm-12">
 		<form name='form' class='form' novalidate>
 
 		<div class='col-sm-12'>
-			<div class='col-sm-9 form-group'>
-				<div class='has-feedback'>
-					<label>Title</label>
-					<input type='text' required class='form-control' name='title' placeholder='{{ph.title}}' ng-model='poll.title'>
-					<span class="trash glyphicon glyphicon-ban-circle form-control-feedback" aria-hidden="true" ng-show='form.title.$error.required'></span>
-				</div>
+			<div class='col-sm-9'>
+					<ptinputrequired name='title' label='Title'></ptinputrequired>
+
 				<div class='has-feedback'>
 					<label>Description</label>
 					<textarea class='form-control' name='desc' placeholder='{{ph.description}}' ng-model='poll.desc' />

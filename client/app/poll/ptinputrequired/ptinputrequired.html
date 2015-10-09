@@ -1,0 +1,7 @@
+<div class='form-group has-feedback'>
+	<label class='control-label' for='{{name}}'>{{label}}</label>
+	<input type='text' required class='form-control' name='{{name}}' placeholder="{{ph[name]}}" ng-model="poll[name]">
+	<div ng-transclude></div>
+	<span class="trash glyphicon glyphicon-ban-circle form-control-feedback" ng-show="{{form[attrs.name].$error.required === true}}"></span>
+<!-- 	<span id="inputError2Status" class="sr-only">(error)</span> -->
+</div

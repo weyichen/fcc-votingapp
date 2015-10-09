@@ -4,7 +4,6 @@ angular.module('basejump1App')
   .controller('PollEditCtrl', function ($scope, $routeParams, $http, Auth) {
     $scope.debug = true;
     $scope.errors = {};
-
   	$scope.poll = {questions: []};
     
     // get existing poll if user is editing one

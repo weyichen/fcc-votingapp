@@ -2,7 +2,7 @@
 
 angular.module('basejump1App')
 
-  .directive('debug', function () {
+  .directive('ptdebug', function () {
     return {
       templateUrl: 'app/debug/debug.html',
       restrict: 'EA',
