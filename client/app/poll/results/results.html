@@ -1,20 +1,24 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
+
+<ptdebug></ptdebug>
+
 <div class="container">
+
+	<div>
+		<canvas id="line" class="chart chart-line" chart-data="data"
+  chart-labels="labels" chart-legend="true" chart-series="series"
+  chart-click="onClick" >
+</canvas> 
+	</div>
+
 	<div class="row">
 		<div class="col-sm-12">
 			<div ng-repeat='question in poll.questions'>
 				<label>{{question.prompt}}</label>
-				
-				<div ng-repeat='response in poll.responses'>
-					{{response.answers[$parent.$index]}} - {{response.username}}
+				<div ng-repeat="(key, value) in poll.aggregates[$index]">
+					<div>{{key + ": " + value}}</div>
 				</div>
-				
-			</div>
-
-			<div ng-repeat='response in poll.responses'>
-			{{response}}
-			</div>
 		</div>
 	</div>
 </div>

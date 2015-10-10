@@ -1,7 +1,10 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
 <div class="container">
-	<ptdebug>Custom</ptdebug>
+	<ptdebug>
+		
+		<testdirective></testdirective>
+	</ptdebug>
 
 	<div class="row">
 		<div class="col-sm-12">
@@ -9,7 +12,7 @@
 
 		<div class='col-sm-12'>
 			<div class='col-sm-9'>
-					<ptinputrequired name='title' label='Title'></ptinputrequired>
+				<ptinputrequired name='title' label='Title'></ptinputrequired>
 
 				<div class='has-feedback'>
 					<label>Description</label>
@@ -25,7 +28,6 @@
 						<label for='prompt' class='col-sm-1 control-label'>Q{{$index+1}}</label>
 						<div class='col-sm-8 has-feedback'>
 							<input type='text' required class='form-control' name="{{'prompt'+$index}}" id="{{'prompt'+$index}}" ng-model='question.prompt' placeholder="{{ph.prompt[question.type]}}">
-							<span class="trash glyphicon glyphicon-ban-circle form-control-feedback" aria-hidden="true" ng-show="{{form['prompt'+$index].$error.required}}"></span>
 						</div>
 						<div class='col-sm-2'>
 							<select class='form-control' ng-model='question.type' ng-options="key for (key, value) in types" ng-change='changeType($index)'></select>

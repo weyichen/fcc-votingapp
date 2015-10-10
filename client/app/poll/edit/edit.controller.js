@@ -5,6 +5,7 @@ angular.module('basejump1App')
     $scope.debug = true;
     $scope.errors = {};
   	$scope.poll = {questions: []};
+    $scope.dirtest = 'Bwahaha';
     
     // get existing poll if user is editing one
     if ($routeParams.id) {

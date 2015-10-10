@@ -8,7 +8,9 @@ angular.module('basejump1App')
       transclude: true,
       link: function (scope, element, attrs) {
       	scope.name = attrs.name;
-      	scope.label = attrs.label;	
+      	scope.label = attrs.label;
+
+      	scope.element = element;
       }
     };
   });
