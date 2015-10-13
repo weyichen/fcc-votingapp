@@ -2,10 +2,7 @@
 
 angular.module('basejump1App')
   .controller('PollResultsCtrl', function ($scope, $routeParams, $http, Auth) {
-
-  $scope.onClick = function (points, evt) {
-    console.log(points, evt);
-  };
+  	$scope.debug = true;
   	
   	$scope.user = Auth.getCurrentUser();
 
@@ -44,6 +41,16 @@ angular.module('basejump1App')
   					case 'scale':
   						dt = aggregate[label].avg;
   						lb = label;
+  						break;
+  					case 'multitext':
+  						dt = [], lb = [];
+  						for (var answer in aggregate[label]) {
+  							if (aggregate[label].hasOwnProperty(answer)) {
+  								dt.push(aggregate[label][answer]);
+  								lb.push(answer);
+  							}
+  						}
+  						break;
   				}
   				$scope.chartData[n].push(dt);
   				$scope.chartLabels[n].push(lb);

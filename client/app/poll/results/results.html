@@ -1,10 +1,11 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
-
 <ptdebug>
+	{{chartData}}<br>
+	{{chartLabels}}
+
 </ptdebug>
 <div class="container">
-<button ng-click="testGet(0)">testGet</button> {{testget}}
 
 	<div class="row">
 		<div class="col-sm-12">
@@ -14,8 +15,15 @@
 				<div ng-repeat="(key, value) in poll.aggregates[$index]">
 					<div>{{key + ": " + value}}</div>
 
+					<div ng-repeat="(k, v) in value">
+						<div>{{k + ": " + v}}</div>
+					</div>
+					<canvas width=100px height=100px ng-show="question.type==='multitext'" id="{{'pie'+value}}" class="chart chart-pie" chart-data="chartData[$parent.$index][$index]" chart-labels="chartLabels[$parent.$index][$index]" ></canvas>
+
 				</div>
-				<canvas ng-show="question.type!=='scale'" id="{{'pie'+value}}" class="chart chart-pie" chart-data="chartData[$index]" chart-labels="chartLabels[$index]" ></canvas>
+
+				<canvas width=100px height=100px ng-show="question.type!=='scale' && question.type!=='multitext'" id="{{'pie'+value}}" class="chart chart-pie" chart-data="chartData[$index]" chart-labels="chartLabels[$index]" ></canvas>
+				
 				<canvas ng-show="question.type==='scale'" id="{{'radar'+value}}" class="chart chart-radar" chart-data="[chartData[$index]]" chart-labels="chartLabels[$index]" ></canvas>
 		</div>
 	</div>

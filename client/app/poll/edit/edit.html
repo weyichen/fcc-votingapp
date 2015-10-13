@@ -3,7 +3,7 @@
 <div class="container">
 	<ptdebug>
 		
-		<testdirective></testdirective>
+	
 	</ptdebug>
 
 	<div class="row">
@@ -12,8 +12,7 @@
 
 		<div class='col-sm-12'>
 			<div class='col-sm-9'>
-				<ptinputrequired name='title' label='Title'></ptinputrequired>
-
+				<ptinput name='title' label='Title' placeholder='ph.title' model='poll.title'></ptinput>
 				<div class='has-feedback'>
 					<label>Description</label>
 					<textarea class='form-control' name='desc' placeholder='{{ph.description}}' ng-model='poll.desc' />
@@ -26,8 +25,8 @@
 				<div class='form-group panel panel-default panel-body' ng-repeat='question in poll.questions'>
 					<div class='form-group col-sm-12'>
 						<label for='prompt' class='col-sm-1 control-label'>Q{{$index+1}}</label>
-						<div class='col-sm-8 has-feedback'>
-							<input type='text' required class='form-control' name="{{'prompt'+$index}}" id="{{'prompt'+$index}}" ng-model='question.prompt' placeholder="{{ph.prompt[question.type]}}">
+						<div class='col-sm-8'>
+							<ptinput name="{{'prompt'+$index}}" placeholder='ph.prompt[question.type]' model='question.prompt'></ptinput>
 						</div>
 						<div class='col-sm-2'>
 							<select class='form-control' ng-model='question.type' ng-options="key for (key, value) in types" ng-change='changeType($index)'></select>

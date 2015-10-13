@@ -8,7 +8,7 @@ angular.module('basejump1App', [
   'ui.bootstrap',
   'chart.js'
 ])
-  .config(function ($routeProvider, $locationProvider, $httpProvider) {
+  .config(function ($routeProvider, $locationProvider, $httpProvider, ChartJsProvider) {
     $routeProvider
       .otherwise({
         redirectTo: '/'
@@ -16,6 +16,10 @@ angular.module('basejump1App', [
 
     $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');
+
+    ChartJsProvider.setOptions({
+      responsive: false
+    });
   })
 
   .factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location) {
